@@ -1,4 +1,4 @@
-![image](https://github.com/Hannahnv/Sale-Insights-Data-Analysis/assets/102349995/e01160f3-6837-4bd7-bfb3-41ed38e245d8)# Sale Insights Data Analysis using SQL and Tableau
+# Sale Insights Data Analysis using SQL and Tableau
 <h2 style='color:blue'>Table of Contents  📋 </h2>
 
 
