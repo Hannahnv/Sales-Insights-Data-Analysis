@@ -1,19 +1,19 @@
 # Sale Insights Data Analysis using SQL and Tableau
 <h2 style='color:blue'>Table of Contents  📋 </h2>
 
-### 🚀 [Setting up and instruction of SQL analysis](#setting-up-and-instruction-of-sql-analysis)
+### 🚀 [Setting up and using SQL analysis](#setting-up-and-using-sql-analysis)
 ### 📉 [RFM Analysis](#rfm-analysis)
 ### 📈 [Analysis](#analysis)
 ### 📊 [Tableau Dashboard](#tableau-dashboard)
 
 
 
-## 🚀 Setting up and instruction of SQL analysis 
+## 🚀 Setting up and using SQL analysis 
 #### Setting up
 1. Open Sale Analysis.sql file in the SQL server or your SQL development kit.
 
 2. Add the Dataset 'stores.xlsx' to the database and run the code.
-#### Instruction of SQL analysis
+#### Using SQL analysis
 To utilize SQL analysis for conducting sales data analysis, follow these steps:
 
 1. Launch your preferred SQL client and connect with the database where you have imported the sales data.
@@ -78,9 +78,15 @@ from rfm_calc rfm
 inner join customers c 
 on rfm.customerNumber=c.customerNumber
 ```
+##### Output
+<img width="784" alt="image" src="https://github.com/Hannahnv/Sale-Insights-Data-Analysis/assets/102349995/7c3e6289-96c2-4957-87f7-19d6993f571c">
 
-If you want to explore SQL queries to analyze, feel free to refer to my SQL file in the repository. 
+-- If you want to explore SQL queries to analyze, feel free to refer to my SQL file in the repository. --
 ## 📊 Tableau Dashboard
+Here is a preview of the interactive dashboard created using Tableau:
+
+<img width="691" alt="image" src="https://github.com/Hannahnv/Sale-Insights-Data-Analysis/assets/102349995/42a685b2-2fb5-4c68-8e05-c8d72697a2c9">
+
 ### 🎨 Find the interactive dashboard here: [Sales Insight Dashboard](https://public.tableau.com/app/profile/hang.nguyen6427/viz/SalesInsightsDashboard_16887527602530/Dashboard1)
 
 
