@@ -1,10 +1,10 @@
 # Sale Insights Data Analysis using SQL and Tableau
 <h2 style='color:blue'>Table of Contents  📋 </h2>
 
-### 🚀 [Setting up and using SQL analysis](#setting-up-and-using-sql-analysis)
-### 📉 [RFM Analysis](#rfm-analysis)
-### 📈 [Analysis](#analysis)
-### 📊 [Tableau Dashboard](#tableau-dashboard)
+### 🚀 [Setting up and using SQL analysis](#🚀-setting-up-and-using-sql-analysis)
+### 📉 [RFM Analysis](#📉-rfm-analysis)
+### 📈 [Analysis](#📈-analysis)
+### 📊 [Tableau Dashboard](#📊-tableau-dashboard)
 
 
 
@@ -52,7 +52,9 @@ with rfm as (
         max(o.orderDate) as last_order_date,
         count(o.orderNumber) as Frequency,
 		sum(od.quantityOrdered * od.priceEach) as MonetaryValue,
-        sum(od.quantityOrdered * od.priceEach) / count(o.orderNumber) as AvgMonetaryValue
+        sum(od.quantityOrdered * od.priceEach) / count(o.orderNumber) as AvgMonetaryValue,
+		(select max(orderDate) from orders as max_order_date) as max_order_date,
+		datediff(dd, max(o.orderDate), (select max(orderDate) from orders)) as Recency
     from orders o
     inner join orderdetails od on o.orderNumber = od.orderNumber
     group by o.customerNumber
@@ -69,7 +71,7 @@ select
 	c.customerName, rfm.*,
 	(case
 		when rfm_recency = 4 and rfm_frequency >= 3 and rfm_monetary >= 3 then 'Loyal Customers'
-    when rfm_recency >= 3 and rfm_frequency >= 3 and rfm_monetary >= 2 then 'Active' --(Customers who buy often & recently, but at low price points)
+        when rfm_recency >= 3 and rfm_frequency >= 3 and rfm_monetary >= 2 then 'Active' --(Customers who buy often & recently, but at low price points)
 		when rfm_recency >= 2 and rfm_frequency >= 1 and rfm_monetary >= 2 then 'Potential Customers'
 		when rfm_recency >= 3 and rfm_frequency >= 1 and rfm_monetary = 1 then 'New Customers'
 		when rfm_recency <= 2 and rfm_frequency >= 1 and rfm_monetary >=1 then 'Lost Customers'
@@ -77,9 +79,11 @@ select
 from rfm_calc rfm
 inner join customers c 
 on rfm.customerNumber=c.customerNumber
+order by MonetaryValue desc
 ```
 ##### Output
-<img width="784" alt="image" src="https://github.com/Hannahnv/Sale-Insights-Data-Analysis/assets/102349995/7c3e6289-96c2-4957-87f7-19d6993f571c">
+<img width="897" alt="image" src="https://github.com/Hannahnv/Sales-Insights-Data-Analysis/assets/102349995/747e32ee-3c22-4bcc-8505-4b2c238e58b6">
+
 
 -- If you want to explore SQL queries to analyze, feel free to refer to my SQL file in the repository. --
 ## 📊 Tableau Dashboard
