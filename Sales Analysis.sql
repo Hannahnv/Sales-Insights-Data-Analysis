@@ -53,7 +53,9 @@ with rfm as (
         max(o.orderDate) as last_order_date,
         count(o.orderNumber) as Frequency,
 		sum(od.quantityOrdered * od.priceEach) as MonetaryValue,
-        sum(od.quantityOrdered * od.priceEach) / count(o.orderNumber) as AvgMonetaryValue
+        sum(od.quantityOrdered * od.priceEach) / count(o.orderNumber) as AvgMonetaryValue,
+		(select max(orderDate) from orders as max_order_date) as max_order_date,
+		datediff(dd, max(o.orderDate), (select max(orderDate) from orders)) as Recency
     from orders o
     inner join orderdetails od on o.orderNumber = od.orderNumber
     group by o.customerNumber
@@ -78,3 +80,4 @@ select
 from rfm_calc rfm
 inner join customers c 
 on rfm.customerNumber=c.customerNumber
+order by MonetaryValue desc
