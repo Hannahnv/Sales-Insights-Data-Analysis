@@ -89,7 +89,7 @@ order by MonetaryValue desc
 ## 📊 Tableau Dashboard
 Here is a preview of the interactive dashboard created using Tableau:
 
-<img width="691" alt="image" src="https://github.com/Hannahnv/Sale-Insights-Data-Analysis/assets/102349995/42a685b2-2fb5-4c68-8e05-c8d72697a2c9">
+<img width="692" alt="image" src="https://github.com/Hannahnv/Sales-Insights-Data-Analysis/assets/102349995/e8df1d63-b4bc-4c5a-b586-aa459e9cece9">
 
 ### 🎨 Find the interactive dashboard here: [Sales Insight Dashboard](https://public.tableau.com/app/profile/hang.nguyen6427/viz/SalesInsightsDashboard_16887527602530/Dashboard1)
 
