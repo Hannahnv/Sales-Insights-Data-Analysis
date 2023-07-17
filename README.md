@@ -1,19 +1,26 @@
 # Sale Insights Data Analysis using SQL and Tableau
+**Author: Hang Vo Thuy Nguyen**
 <h2 style='color:blue'>Table of Contents  📋 </h2>
 
-### 🚀 [Setting up and using SQL analysis](#🚀-setting-up-and-using-sql-analysis)
-### 📉 [RFM Analysis](#📉-rfm-analysis)
-### 📈 [Analysis](#📈-analysis)
-### 📊 [Tableau Dashboard](#📊-tableau-dashboard)
+### 🚀 [Setting up and database structure](#setting-up-and-database-structure)
+### 📊 [Using SQL analysis](#using-sql-analysis)
+### 📉 [RFM Analysis](#rfm-analysis)
+### 📈 [Analysis](#analysis)
+### 🎨 [Tableau Dashboard](#tableau-dashboard)
 
 
 
-## 🚀 Setting up and using SQL analysis 
-#### Setting up
+## 1. Setting up and database structure
+#### 1.1 Setting up
 1. Open Sale Analysis.sql file in the SQL server or your SQL development kit.
 
 2. Add the Dataset 'stores.xlsx' to the database and run the code.
-#### Using SQL analysis
+
+#### 1.2 Database structure
+
+<img width="621" alt="image" src="https://github.com/Hannahnv/Sales-Insights-Data-Analysis/assets/102349995/0cdd4cbc-bcdf-4087-a4de-3f1cc269796e">
+
+## 2. Using SQL analysis
 To utilize SQL analysis for conducting sales data analysis, follow these steps:
 
 1. Launch your preferred SQL client and connect with the database where you have imported the sales data.
@@ -24,7 +31,7 @@ To utilize SQL analysis for conducting sales data analysis, follow these steps:
 
 4. Evaluate the outcomes and extract valuable insights from the sales data.
 
-## 📉 RFM Analysis
+## 3. RFM Analysis
 RFM analysis is used to segment customers based on their purchasing behavior. It involves evaluating three key dimensions:
 
 * <b>Recency(R):</b> Measures the time elapsed since the customer's last purchase. Customers who made recent purchases are more likely to be engaged and responsive.
@@ -33,18 +40,83 @@ RFM analysis is used to segment customers based on their purchasing behavior. It
   
 By analyzing these dimensions, RFM analysis assigns scores to each customer. It categorizes them into different segments such as Loyal Customers, Active (Customers who buy often & recently, but at low price points), Potential Customers, New Customers, and Lost Customers. 
 
-## 📈 Analysis
-Here are some instances of the analysis you can conduct using this repository:
+## 4. Analysis
+Here are some analyses I used in this repository:
 
-* Items have not been ordered
-* Items ordered at least once
-* Order quantity and Revenue by countries
-* Total orders and Revenue per status
-* Revenue by Product
-* Revenue by product line
-* Identify the best customers and categorize them into different segments based on RFM analysis
+* **Items have not been ordered**
+```SQL
+select * from products P
+left join orderdetails O
+on P.productCode=O.productCode
+where O.productCode is null
+```
+##### Output:
+
+<img width="813" alt="image" src="https://github.com/Hannahnv/Sales-Insights-Data-Analysis/assets/102349995/0a340308-2ea6-4763-9013-e6e905c2b3f8">
+
+* **Items ordered at least once**
+```SQL
+select distinct P.productCode, P.productName 
+from products P inner join orderdetails O 
+on P.productcode=O.productCode
+```
+##### Output:
+
+<img width="813" alt="image" src="https://github.com/Hannahnv/Sales-Insights-Data-Analysis/assets/102349995/87efc58b-7d4f-4fd6-8937-b8c24d601cff">
+
+* **Order quantity and Revenue by countries**
+```SQL
+select c.country, sum(od.quantityOrdered) as TotalQuantityOrderd, sum(od.quantityOrdered*od.priceEach) as Revenue
+from customers c inner join orders o
+on c.customerNumber=o.customerNumber
+inner join orderdetails od
+on o.orderNumber=od.orderNumber
+group by c.country
+order by TotalQuantityOrderd desc
+```
+##### Output:
+
+<img width="812" alt="image" src="https://github.com/Hannahnv/Sales-Insights-Data-Analysis/assets/102349995/43b52df5-7a44-45ba-8278-5fe4213b2f04">
+
+* **Total orders and Revenue per status**
+```SQL
+select o.status, count(distinct o.orderNumber) as OrderCount, sum(od.quantityOrdered * od.priceEach) AS Revenue
+from orders o
+inner join orderdetails od
+on o.orderNumber = od.orderNumber
+group by o.status
+order by Revenue desc
+```
+##### Output: 
+
+<img width="204" alt="image" src="https://github.com/Hannahnv/Sales-Insights-Data-Analysis/assets/102349995/c0c6ef90-47fe-4f77-980e-8c0c7e7eae60">
+
+* **Revenue by Product**
+```SQL
+select P.productCode, P.productName, sum(od.quantityOrdered * od.priceEach) as Revenue
+from products P inner join orderdetails od
+on P.productCode=od.productCode 
+group by P.productCode, P.productName
+order by Revenue desc
+```
+##### Output:
+
+<img width="811" alt="image" src="https://github.com/Hannahnv/Sales-Insights-Data-Analysis/assets/102349995/aed0275c-fa00-48a7-8bc3-1a95e8c422b2">
   
-_ For example, the following SQL query performs to identify the best customers by analyzing their recency, frequency, and monetary value (RFM): 
+* **Revenue by product line**
+```SQL
+select p.productLine, sum(od.quantityOrdered * od.priceEach) AS Revenue
+from products p
+inner join orderdetails od
+on p.productCode = od.productCode
+group by p.productLine
+order by Revenue desc
+```
+##### Output:
+
+<img width="180" alt="image" src="https://github.com/Hannahnv/Sales-Insights-Data-Analysis/assets/102349995/1864580a-9d9e-4542-a81f-822b5626de6a">
+
+* **Identify the best customers and categorize them into different segments based on RFM analysis**
 ```SQL
 with rfm as (
     select
@@ -84,18 +156,10 @@ order by MonetaryValue desc
 ##### Output
 <img width="897" alt="image" src="https://github.com/Hannahnv/Sales-Insights-Data-Analysis/assets/102349995/747e32ee-3c22-4bcc-8505-4b2c238e58b6">
 
-
--- If you want to explore SQL queries to analyze, feel free to refer to my SQL file in the repository. --
-## 📊 Tableau Dashboard
+## 5. Tableau Dashboard
 Here is a preview of the interactive dashboard created using Tableau:
 
 <img width="692" alt="image" src="https://github.com/Hannahnv/Sales-Insights-Data-Analysis/assets/102349995/e8df1d63-b4bc-4c5a-b586-aa459e9cece9">
 
 ### 🎨 Find the interactive dashboard here: [Sales Insight Dashboard](https://public.tableau.com/app/profile/hang.nguyen6427/viz/SalesInsightsDashboard_16887527602530/Dashboard1)
-
-
-
- 
-
-
 
