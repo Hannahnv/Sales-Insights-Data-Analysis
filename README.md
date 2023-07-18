@@ -2,11 +2,11 @@
 **Author: Hang Vo Thuy Nguyen**
 <h2 style='color:blue'>Table of Contents  📋 </h2>
 
-### 🚀 [Setting up and database structure](#setting-up-and-database-structure)
-### 📊 [Using SQL analysis](#using-sql-analysis)
-### 📉 [RFM Analysis](#rfm-analysis)
-### 📈 [Analysis](#analysis)
-### 🎨 [Tableau Dashboard](#tableau-dashboard)
+### 🚀 [1. Setting up and database structure](#1-setting-up-and-database-structure)
+### 📊 [2. Using SQL analysis](#2-using-sql-analysis)
+### 📉 [3. RFM Analysis](#3-rfm-analysis)
+### 📈 [4. Analysis](#4-analysis)
+### 🎨 [5. Tableau Dashboard](#5-tableau-dashboard)
 
 
 
