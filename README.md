@@ -106,6 +106,46 @@ order by Revenue desc
 
 <img width="180" alt="image" src="https://github.com/Hannahnv/Sales-Insights-Data-Analysis/assets/102349995/1864580a-9d9e-4542-a81f-822b5626de6a">
 
+* **Who is the best customer? (Using RFM analysis)**
+```SQL
+with rfm as (
+    select
+        o.customerNumber,
+        max(o.orderDate) as last_order_date,
+        count(o.orderNumber) as Frequency,
+		sum(od.quantityOrdered * od.priceEach) as MonetaryValue,
+        sum(od.quantityOrdered * od.priceEach) / count(o.orderNumber) as AvgMonetaryValue,
+		(select max(orderDate) from orders as max_order_date) as max_order_date,
+		datediff(dd, max(o.orderDate), (select max(orderDate) from orders)) as Recency
+    from orders o
+    inner join orderdetails od on o.orderNumber = od.orderNumber
+    group by o.customerNumber
+),
+rfm_calc as ( 
+	select 
+		r.*, 
+		ntile(4) over (order by last_order_date) as rfm_recency,
+		ntile(4) over (order by Frequency) as rfm_frequency,
+		ntile(4) over (order by MonetaryValue) as rfm_monetary
+	from rfm r
+)
+select 
+	c.customerName, rfm.*,
+	(case
+		when rfm_recency = 4 and rfm_frequency >= 3 and rfm_monetary >= 3 then 'Loyal Customers'
+        when rfm_recency >= 3 and rfm_frequency >= 3 and rfm_monetary >= 2 then 'Active' --(Customers who buy often & recently, but at low price points)
+		when rfm_recency >= 2 and rfm_frequency >= 1 and rfm_monetary >= 2 then 'Potential Customers'
+		when rfm_recency >= 3 and rfm_frequency >= 1 and rfm_monetary = 1 then 'New Customers'
+		when rfm_recency <= 2 and rfm_frequency >= 1 and rfm_monetary >=1 then 'Lost Customers'
+	 end) as rfm_segment
+from rfm_calc rfm
+inner join customers c 
+on rfm.customerNumber=c.customerNumber
+order by MonetaryValue desc
+```
+##### Output:
+<img width="811" alt="image" src="https://github.com/Hannahnv/Sales-Insights-Data-Analysis/assets/102349995/5326abec-6945-4380-b7e8-b683c673e4b8">
+
 ## 4. Tableau Dashboard
 Here is a preview of the interactive dashboard created using Tableau:
 
